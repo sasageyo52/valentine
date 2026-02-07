@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Valentine ❤️</title>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  text-align:center;
+  color:white;
+  background: linear-gradient(135deg,#ff758c,#ff7eb3);
+  padding:30px;
+  overflow:hidden;
+}
+.card{
+  background: rgba(255,255,255,0.15);
+  padding:25px;
+  border-radius:20px;
+  position:relative;
+}
+button{
+  padding:12px 20px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.gusto{background:white;color:#ff4d6d;}
+.ayoko{background:#ff4d6d;color:white;}
+img{width:230px;border-radius:15px;margin-top:15px;}
+.heart, .confetti{
+  position:fixed;
+  top:-10px;
+  font-size:20px;
+  animation:fall 5s linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-10px);}
+  100%{transform:translateY(100vh);}
+}
+#popup{
+  display:none;
+  position:fixed;
+  top:30%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+  color:#ff4d6d;
+  padding:20px;
+  border-radius:15px;
+  font-size:20px;
+  box-shadow:0 0 20px rgba(0,0,0,0.5);
+  z-index:1000;
+}
+.credit{
+  font-size:12px; color:#fff; margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-cute.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+<h1 id="title">Hi love! ❤️</h1>
+<p id="question">Tap here po 😌</p>
+<img id="pic" src="">
+<br>
+<button class="gusto" onclick="start()">Tap Here 💌</button>
+</div>
+
+<div id="popup">Yay! Thank you po love ❤️ Happy Valentine's Day po! Iloveyouu 😍</div>
+<p class="credit">Music: “Cute” by Bensound – <a href="https://www.bensound.com" target="_blank" style="color:#fff;">https://www.bensound.com</a></p>
+
+<script>
+let step=0;
+let noClicks=0;
+const maxNoClicks=3;
+
+// 10 sequential questions
+const questions=[
+"Pwede po ba kitang maging Valentine? 🥺❤️",
+"Sure ka po ba?😭😭 payag kana po love😭🐱",
+"Kahit milk tea date lang po 🧋🥺",
+"Kahit yakap lang po muna love 🫂",
+"Gusto mo po ice cream o chocolate? pwede rin pong ako jk🍦🎂",
+"Libre ko po fries, wag lang Ayoko 😭",
+"Gusto mo po sunset walk? 🌅",
+"Game po tayo ng taguan sa park? di pwedeng hinde 🏞️",
+"Mag-picture po tayo sa beach? 🏖️",
+"Gusto mo po manood ng movie with me? yung pirated po? jk 🎬"
+];
+
+// Direct GIF URLs (publicly hosted, reliable)
+const pics=[
+"https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
+"https://media3.giphy.com/media/TZBED1pP5m8N2/giphy.gif",
+"https://media2.giphy.com/media/klu2KSBQwdYA/giphy.gif",
+"https://media0.giphy.com/media/1JmGiBtqTuehfYxuy9/giphy.gif",
+"https://media0.giphy.com/media/wrXXI5XwIx6c8/giphy.gif",
+"https://media2.giphy.com/media/mdmQ4KLq4Xm2i8Bopx/giphy.gif",
+"https://media4.giphy.com/media/N92tr5rzjZx7wnRKiy/giphy.gif",
+"https://media4.giphy.com/media/901mxGLGQN2PyCQpoc/giphy.gif",
+"https://media1.giphy.com/media/TjSPQgowhhJdHgvnwA/giphy.gif",
+"https://media4.giphy.com/media/9uwnYUDw342pq/giphy.gif"
+];
+
+function start(){
+  document.getElementById("music").play(); // start cute music
+  makeHearts();
+  step = 0;
+  noClicks = 0;
+  showStep();
+}
+
+function gusto(){ showPopup(); }
+
+function ayoko(){
+  shake();
+  noClicks++;
+  step++;
+  if(step >= questions.length){
+    miniGame();
+  } else {
+    showStep();
+  }
+}
+
+function showStep(){
+  typeText(questions[step]);
+  document.getElementById("pic").src = pics[step];
+  addButtons(step < questions.length);
+}
+
+function addButtons(showAyoko){
+  removeButtons();
+  let gustoBtn = document.createElement("button");
+  gustoBtn.innerHTML="Gusto ❤️";
+  gustoBtn.className="gusto";
+  gustoBtn.onclick=gusto;
+  document.querySelector(".card").appendChild(gustoBtn);
+
+  if(showAyoko){
+    let ayokoBtn = document.createElement("button");
+    ayokoBtn.innerHTML="Ayoko 😭";
+    ayokoBtn.className="ayoko";
+    ayokoBtn.onclick=ayoko;
+    document.querySelector(".card").appendChild(ayokoBtn);
+  }
+}
+
+function removeButtons(){
+  document.querySelectorAll(".gusto,.ayoko").forEach(e=>e.remove());
+}
+
+function makeHearts(){
+  setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💘";
+    h.style.left=Math.random()*100+"%";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  },500);
+}
+
+function shake(){
+  document.body.style.transform="translateX(10px)";
+  setTimeout(()=>document.body.style.transform="translateX(-10px)",100);
+  setTimeout(()=>document.body.style.transform="translateX(0px)",200);
+}
+
+function typeText(text){
+  let q=document.getElementById("question");
+  q.innerHTML="";
+  let i=0;
+  let interval=setInterval(()=>{
+    q.innerHTML+=text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(interval);
+  },30);
+}
+
+function miniGame(){
+  typeText(" tap 5 hearts po love para sa final answer hehehehe 💘");
+  removeButtons();
+  let count=0;
+  let interval=setInterval(()=>{
+    let h=document.createElement("div");
+    h.innerHTML="💘";
+    h.style.position="fixed";
+    h.style.left=Math.random()*90+"%";
+    h.style.top=Math.random()*80+"%";
+    h.style.fontSize="30px";
+    h.style.cursor="pointer";
+    h.onclick=()=>{
+      h.remove();
+      count++;
+      if(count>=5){
+        clearInterval(interval);
+        typeText("Final answer… magiging Valentine po ba kita? at magkikita po tayo? 😌❤️");
+        document.getElementById("pic").src=pics[0];
+        addButtons(false);
+        confetti();
+      }
+    };
+    document.body.appendChild(h);
+  },700);
+}
+
+function confetti(){
+  for(let i=0;i<30;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.innerHTML="🎉";
+    c.style.left=Math.random()*100+"%";
+    c.style.fontSize=(15+Math.random()*15)+"px";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+function showPopup(){
+  const p=document.getElementById("popup");
+  p.style.display="block";
+  setTimeout(()=>p.style.display="none",4000);
+}
+</script>
+
+</body>
+</html>
